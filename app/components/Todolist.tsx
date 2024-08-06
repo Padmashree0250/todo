@@ -1,17 +1,26 @@
+"use client";
+import React, { useState } from "react";
 import { Itask } from "@/types/tasks";
 import Task from "./Task";
-import React from "react";
 
 interface TodolistProps {
   tasks: Itask[];
+  onToggleCompletion: (id: string, isCompleted: boolean) => void;
+  onEdit: (task: Itask) => void;  
+  onDelete: (id: string) => void;
 }
 
-const Todolist: React.FC<TodolistProps> = ({ tasks }) => {
+const Todolist: React.FC<TodolistProps> = ({ tasks, onToggleCompletion, onEdit, onDelete }) => {
+  const [expandedTaskId, setExpandedTaskId] = useState<string | null>(null);
+
+  const handleTaskClick = (id: string) => {
+    setExpandedTaskId(expandedTaskId === id ? null : id); // Toggle expansion
+  };
+
   return (
     <div>
       <div className="overflow-x-auto">
         <table className="table">
-          {/* head */}
           <thead>
             <tr>
               <th>Tasks</th>
@@ -19,13 +28,30 @@ const Todolist: React.FC<TodolistProps> = ({ tasks }) => {
             </tr>
           </thead>
           <tbody>
-            {tasks.map((task) => (
-              <Task key={task.id} task={task} />
-            ))}
+            {tasks.length > 0 ? (
+              tasks.map((task) => (
+                <Task
+                  key={task.id}
+                  task={task}
+                  onToggleCompletion={onToggleCompletion}
+                  onEdit={onEdit}
+                  onDelete={onDelete}
+                  expandedTaskId={expandedTaskId}
+                  onTaskClick={handleTaskClick}
+                />
+              ))
+            ) : (
+              <tr>
+                <td colSpan={2} className="text-center">
+                  No tasks found
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>
     </div>
   );
 };
+
 export default Todolist;

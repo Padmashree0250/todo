@@ -1,12 +1,12 @@
 interface ModalProps {
   modalOpen: boolean;
-  setModelOpen: (open: boolean) => boolean | void;
+  setModelOpen: (open: boolean) => void;
   children: React.ReactNode;
 }
 
-const Modal: React.FC<ModalProps> = ({ modalOpen, setModelOpen,children }) => {
+const Modal: React.FC<ModalProps> = ({ modalOpen, setModelOpen, children }) => {
   return (
-    <div className={`modal ${modalOpen ? "modal-open" : " "}`}>
+    <div className={`modal ${modalOpen ? "modal-open" : ""}`}>
       <div className="modal-box relative">
         <label
           onClick={() => setModelOpen(false)}
@@ -14,9 +14,10 @@ const Modal: React.FC<ModalProps> = ({ modalOpen, setModelOpen,children }) => {
         >
           x
         </label>
-       {children}
+        {children}
       </div>
     </div>
   );
 };
+
 export default Modal;

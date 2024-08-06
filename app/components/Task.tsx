@@ -1,86 +1,81 @@
-"use client";
+// components/Task.tsx
+import React from "react";
 import { Itask } from "@/types/tasks";
-import { useState } from "react";
-import { FiEdit } from "react-icons/fi";
-import { FiTrash } from "react-icons/fi";
-import Modal from "./model";
-import { FormEventHandler } from "react";
-import { useRouter } from "next/navigation";
-import { editTodo } from "@/api";
-import { deleteTodo } from "@/api";
+import { AiOutlineEdit, AiOutlineDelete } from "react-icons/ai"; // Import icons for edit and delete
+
 interface TaskProps {
   task: Itask;
+  onToggleCompletion: (id: string, isCompleted: boolean) => void;
+  onEdit: (task: Itask) => void;
+  onDelete: (id: string) => void;
+  expandedTaskId: string | null; // Track which task is expanded
+  onTaskClick: (id: string) => void; // Handle task click to toggle expansion
 }
 
-const Task: React.FC<TaskProps> = ({ task }) => {
-  const router = useRouter();
-  const [modalOpenEdit, setModelOpenEdit] = useState<boolean>(false);
-  const [modalOpenDeleted, setModelOpenDeleted] = useState<boolean>(false);
-  const [tashToEdit, setTasktoEdit] = useState<string>(task.text);
-
-  const handleSubmitEditTodo: FormEventHandler<HTMLFormElement> = async (e) => {
-    e.preventDefault();
-    await editTodo({
-      id: task.id,
-      text: tashToEdit,
-    });
-
-    setModelOpenEdit(false);
-    router.refresh();
+const Task: React.FC<TaskProps> = ({
+  task,
+  onToggleCompletion,
+  onEdit,
+  onDelete,
+  expandedTaskId,
+  onTaskClick
+}) => {
+  const handleTaskClick = (event: React.MouseEvent) => {
+    event.stopPropagation(); // Prevent triggering onCheckboxChange
+    onTaskClick(task.id);
   };
-  const handleSubmitDeleteTask = async (id: string) => {
-    await deleteTodo(id);
-    setModelOpenDeleted(false);
-    router.refresh();
+
+  const handleCheckboxClick = (event: React.MouseEvent) => {
+    event.stopPropagation(); // Prevent triggering onTaskClick
+    onToggleCompletion(task.id, task.isCompleted);
   };
+
+  const handleDeleteClick = (event: React.MouseEvent) => {
+    event.stopPropagation(); // Prevent triggering onTaskClick
+    const confirmed = window.confirm("Are you sure you want to delete this task?");
+    if (confirmed) {
+      onDelete(task.id);
+    }
+  };
+
   return (
-    <tr key={task.id}>
-      <td className="w-full">{task.text}</td>
-      <td className="flex gap-5">
-        <FiEdit
-          onClick={() => setModelOpenEdit(true)}
-          cursor="pointer"
-          className="text-blue-300"
-          size={25}
-        />
-        <Modal modalOpen={modalOpenEdit} setModelOpen={setModelOpenEdit}>
-          <form onSubmit={handleSubmitEditTodo}>
-            <h3 className="font-bold text-lg"> Edit the task</h3>
-            <div className="modal-action">
-              <input
-                value={tashToEdit}
-                onChange={(e) => setTasktoEdit(e.target.value)}
-                type="text"
-                placeholder="Type here"
-                className="input input-bordered w-full "
-              />
-              <button type="submit" className="btn">
-                Submit
-              </button>
+    <>
+      <tr onClick={handleTaskClick} className="cursor-pointer">
+        <td>{task.text}</td>
+        <td>
+          <input
+            type="checkbox"
+            readOnly={task.isCompleted}
+            onClick={handleCheckboxClick}
+          />
+          <button 
+            onClick={(e) => { e.stopPropagation(); onEdit(task); }}
+            className="ml-2 text-blue-500"
+            aria-label="Edit"
+          >
+            <AiOutlineEdit size={20} />
+          </button>
+          <button 
+            onClick={handleDeleteClick}
+            className="ml-2 text-red-500"
+            aria-label="Delete"
+          >
+            <AiOutlineDelete size={20} />
+          </button>
+        </td>
+      </tr>
+      {expandedTaskId === task.id && (
+        <tr>
+          <td colSpan={2}>
+            <div className="p-2 border-t">
+              <p><strong>Description:</strong> {task.description || "No description available"}</p> 
+              <p><strong>Last Updated:</strong> {task.lastUpdated || "No timestamp available"}</p>
             </div>
-          </form>
-        </Modal>
-        <FiTrash
-          onClick={() => setModelOpenDeleted(true)}
-          cursor="pointer"
-          className="text-purple-400"
-          size={25}
-        />
-        <Modal modalOpen={modalOpenDeleted} setModelOpen={setModelOpenDeleted}>
-          <h3 className="text-lg">
-            Are you sure ,you want to delete this task
-          </h3>
-          <div className="model-action">
-            <button
-              onClick={() => handleSubmitDeleteTask(task.id)}
-              className="btn"
-            >
-              YES
-            </button>
-          </div>
-        </Modal>
-      </td>
-    </tr>
+          </td>
+        </tr>
+      )}
+    </>
   );
 };
+
 export default Task;

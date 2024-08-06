@@ -1,48 +1,187 @@
 "use client";
 
-import { AiOutlinePlus } from "react-icons/ai";
+import { AiOutlinePlus } from "react-icons/ai"; //icons
 import Modal from "./model";
-import { FormEventHandler } from "react";
-import { useState } from "react";
-import { addTodo } from "@/api";
+import { FormEventHandler, useState, useEffect } from "react";
+import {
+  addTodo,
+  getAlLTodos,
+  toggleTodoCompletion,
+  editTodo,
+  deleteTodo,
+} from "../pages/page"; //api 
 import { useRouter } from "next/navigation";
-import { v4 as uuidv4 } from "uuid";
+import { v4 as uuidv4 } from "uuid"; //unique id for task
+import { Itask } from "@/types/tasks"; //data 
+import Todolist from "./Todolist";
 
 const AddTask = () => {
   const router = useRouter();
-  const [modalOpen, setModelOpen] = useState<boolean>(false);
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [newTaskValue, setNewTaskValue] = useState<string>("");
+  const [newTaskDescription, setNewTaskDescription] = useState<string>("");
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [tasks, setTasks] = useState<Itask[]>([]);
+  const [filteredTasks, setFilteredTasks] = useState<Itask[]>([]);
+  const [editingTask, setEditingTask] = useState<Itask | null>(null);
+
+  useEffect(() => {
+    const fetchTasks = async () => {
+      try {
+        const fetchedTasks = await getAlLTodos();
+        setTasks(fetchedTasks);
+        setFilteredTasks(fetchedTasks); // Initialize filteredTasks with all tasks for search
+      } catch (error) {
+        console.error("Failed to fetch tasks:", error);
+      }
+    };
+
+    fetchTasks();
+  }, []);
+
   const handleSubmitNewTodo: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
-    await addTodo({
-      id: "uuidv4",
+    const newTask: Itask = {
+      id: uuidv4(),
       text: newTaskValue,
-    });
-    setNewTaskValue("");
-    setModelOpen(false);
-    router.refresh();
+      isCompleted: false,
+      description: newTaskDescription,
+      lastUpdated: new Date().toISOString(),
+    };
+
+    try {
+      if (editingTask) {
+        await editTodo({
+          ...editingTask,
+          text: newTaskValue,
+          description: newTaskDescription,
+          lastUpdated: new Date().toISOString(),
+        });
+        const updatedTasks = tasks.map((task) =>
+          task.id === editingTask.id
+            ? {
+                ...task,
+                text: newTaskValue,
+                description: newTaskDescription,
+                lastUpdated: new Date().toISOString(),
+              }
+            : task
+        );
+        setTasks(updatedTasks);
+        setFilteredTasks(updatedTasks);
+      } else {
+        await addTodo(newTask);
+        const updatedTasks = [...tasks, newTask];
+        setTasks(updatedTasks);
+        setFilteredTasks(updatedTasks);
+      }
+
+      setNewTaskValue("");
+      setNewTaskDescription("");
+      setModalOpen(false);
+      setEditingTask(null);
+      router.refresh();
+    } catch (error) {
+      console.error("Failed to save task:", error);
+    }
   };
+
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const query = e.target.value;
+    setSearchQuery(query);
+    filterTasks(query, tasks);
+  };
+
+  const filterTasks = (query: string, tasks: Itask[]) => {
+    const lowerCaseQuery = query.toLowerCase();
+    const filtered = tasks.filter((task) =>
+      task.text.toLowerCase().includes(lowerCaseQuery)
+    );
+    setFilteredTasks(filtered);
+  };
+
+  const handleToggleCompletion = async (id: string, isCompleted: boolean) => {
+    try {
+      await toggleTodoCompletion(id, isCompleted);
+      const updatedTasks = tasks.map((task) =>
+        task.id === id ? { ...task, isCompleted: !isCompleted } : task
+      );
+      setTasks(updatedTasks);
+      setFilteredTasks(updatedTasks);
+    } catch (error) {
+      console.error("Failed to toggle task completion:", error);
+    }
+  };
+
+  const handleEdit = (task: Itask) => {
+    setEditingTask(task);
+    setNewTaskValue(task.text);
+    setNewTaskDescription(task.description || "");
+    setModalOpen(true);
+  };
+
+  const handleDelete = async (id: string) => {
+    try {
+      await deleteTodo(id);
+      const updatedTasks = tasks.filter((task) => task.id !== id);
+      setTasks(updatedTasks);
+      setFilteredTasks(updatedTasks);
+    } catch (error) {
+      console.error("Failed to delete task:", error);
+    }
+  };
+
   return (
     <div>
-      <button
-        onClick={() => setModelOpen(true)}
-        className="btn btn-primary w-full"
-      >
-        Add new Task <AiOutlinePlus className="ml-2" size={18} />
-      </button>
-      <Modal modalOpen={modalOpen} setModelOpen={setModelOpen}>
+      <div className="flex mb-4">
+        <input
+          type="text"
+          placeholder="Search tasks..."
+          className="input input-bordered w-full"
+          value={searchQuery}
+          onChange={handleSearch}
+        />
+        <button
+          onClick={() => {
+            setEditingTask(null);
+            setNewTaskValue("");
+            setNewTaskDescription("");
+            setModalOpen(true);
+          }}
+          className="btn btn-primary ml-2"
+        >
+          Add new Task <AiOutlinePlus className="ml-2" size={18} />
+        </button>
+      </div>
+
+      <Todolist
+        tasks={filteredTasks}
+        onToggleCompletion={handleToggleCompletion}
+        onEdit={handleEdit}
+        onDelete={handleDelete}
+      />
+
+      <Modal modalOpen={modalOpen} setModelOpen={setModalOpen}>
         <form onSubmit={handleSubmitNewTodo}>
-          <h3 className="font-bold text-lg"> add new task</h3>
+          <h3 className="font-bold text-lg">
+            {editingTask ? "Edit Task" : "Add New Task"}
+          </h3>
           <div className="modal-action">
             <input
               value={newTaskValue}
               onChange={(e) => setNewTaskValue(e.target.value)}
               type="text"
-              placeholder="Type here"
+              placeholder="Task Title"
               className="input input-bordered w-full"
             />
-            <button type="submit" className="btn">
-              Submit
+            <textarea
+              value={newTaskDescription}
+              onChange={(e) => setNewTaskDescription(e.target.value)}
+              placeholder="Task Description"
+              className="input input-bordered w-full mt-2"
+            />
+            <button type="submit" className="btn mt-2">
+              {editingTask ? "Update" : "Submit"}
             </button>
           </div>
         </form>

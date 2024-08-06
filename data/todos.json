@@ -2,15 +2,73 @@
   "tasks": [
     {
       "id": "1",
-      "text": "buy milk with some orange and apple"
-    },
-    {
-      "id": "2",
-      "text": "buy eggs"
+      "text": "buy milk with some orange and apple",
+      "isCompleted": true,
+      "description": "with some potatoess\n",
+      "lastUpdated": "2024-08-06T05:01:09.431Z"
     },
     {
       "id": "3",
-      "text": " go to gym"
+      "text": " go to gym",
+      "isCompleted": false,
+      "description": "evening",
+      "lastUpdated": "2024-08-06T07:01:32.136Z"
+    },
+    {
+      "id": "623d6d5b-24af-43d1-b830-d9912fc964fb",
+      "text": "go to college",
+      "isCompleted": false,
+      "description": "8;45",
+      "lastUpdated": "2024-08-06T05:06:10.571Z"
+    },
+    {
+      "id": "7e31902f-b1b2-4afb-ab65-de1a0ba7c638",
+      "text": "go to market",
+      "isCompleted": true,
+      "description": "today ",
+      "lastUpdated": "2024-08-06T07:01:48.240Z"
+    },
+    {
+      "id": "225fab60-7a52-4bf8-bffe-3e5d76d590b4",
+      "text": "go to school",
+      "isCompleted": true,
+      "description": "early\n",
+      "lastUpdated": "2024-08-06T07:00:59.903Z"
+    },
+    {
+      "id": "9310dbda-15eb-4798-ad96-29aea1ee6c4f",
+      "text": "go to home ",
+      "isCompleted": true,
+      "description": "soon",
+      "lastUpdated": "2024-08-06T04:35:23.524Z"
+    },
+    {
+      "id": "e32ca81f-e893-4e73-9b73-7ba661512186",
+      "text": "complete assignment",
+      "isCompleted": true,
+      "description": "complete science english math assignment",
+      "lastUpdated": "2024-08-06T05:04:55.834Z"
+    },
+    {
+      "id": "370ff6fd-5e88-479c-a7f1-25edc85035aa",
+      "text": "exercise regularly",
+      "isCompleted": false,
+      "description": "5 days in a week",
+      "lastUpdated": "2024-08-06T05:25:16.597Z"
+    },
+    {
+      "id": "8f79599a-4517-48ec-acf3-13879baf777c",
+      "text": "learn nextjs",
+      "isCompleted": false,
+      "description": "within one month",
+      "lastUpdated": "2024-08-06T05:35:02.236Z"
+    },
+    {
+      "id": "2de347dd-2537-4ba4-a72d-009f33d7a04f",
+      "text": "meditation",
+      "isCompleted": false,
+      "description": "meditate for 15 min mrng",
+      "lastUpdated": "2024-08-06T07:00:40.455Z"
     }
   ]
 }

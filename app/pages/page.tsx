@@ -1,11 +1,31 @@
-import { Itask } from "./types/tasks";
+import { Itask } from "@/types/tasks";
 
 // Base URL for the API
 const baseURL = "http://localhost:3001";
 
 // Fetch tasks based on a search query
 export const searchTodos = async (query: string): Promise<Itask[]> => {
-  const response = await fetch(`${baseURL}/tasks/search?query=${encodeURIComponent(query)}`, {
+  const response = await fetch(
+    `${baseURL}/tasks/search?query=${encodeURIComponent(query)}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch tasks");
+  }
+
+  const tasks: Itask[] = await response.json();
+  return tasks;
+};
+
+// Fetching all tasks
+export const getAlLTodos = async (): Promise<Itask[]> => {
+  const response = await fetch(`${baseURL}/tasks`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -16,18 +36,11 @@ export const searchTodos = async (query: string): Promise<Itask[]> => {
     throw new Error("Failed to fetch tasks");
   }
 
-  const tasks: Itask[] = await response.json();
-  return tasks;
-};
-
-// Fetch all tasks
-export const getAlLTodos = async (): Promise<Itask[]> => {
-  const response = await fetch(`${baseURL}/tasks`, { cache: "no-store" });
-  const todos = await response.json();
+  const todos: Itask[] = await response.json();
   return todos;
 };
 
-// Add a new task
+// Adding a new task
 export const addTodo = async (todo: Itask): Promise<Itask> => {
   const res = await fetch(`${baseURL}/tasks`, {
     method: "POST",
@@ -36,11 +49,16 @@ export const addTodo = async (todo: Itask): Promise<Itask> => {
     },
     body: JSON.stringify(todo),
   });
-  const newTodo = await res.json();
+
+  if (!res.ok) {
+    throw new Error("Failed to add task");
+  }
+
+  const newTodo: Itask = await res.json();
   return newTodo;
 };
 
-// Edit an existing task
+// Editing an existing task
 export const editTodo = async (todo: Itask): Promise<Itask> => {
   const res = await fetch(`${baseURL}/tasks/${todo.id}`, {
     method: "PUT",
@@ -49,15 +67,24 @@ export const editTodo = async (todo: Itask): Promise<Itask> => {
     },
     body: JSON.stringify(todo),
   });
-  const updatedTodo = await res.json();
+
+  if (!res.ok) {
+    throw new Error("Failed to edit task");
+  }
+
+  const updatedTodo: Itask = await res.json();
   return updatedTodo;
 };
 
-// Delete a task
+// Deleting a task
 export const deleteTodo = async (id: string): Promise<void> => {
-  await fetch(`${baseURL}/tasks/${id}`, {
+  const res = await fetch(`${baseURL}/tasks/${id}`, {
     method: "DELETE",
   });
+
+  if (!res.ok) {
+    throw new Error("Failed to delete task");
+  }
 };
 
 // Toggle the completion status of a task
@@ -72,6 +99,11 @@ export const toggleTodoCompletion = async (
     },
     body: JSON.stringify({ isCompleted: !isCompleted }), // Toggle completion status
   });
-  const updatedTodo = await res.json();
+
+  if (!res.ok) {
+    throw new Error("Failed to toggle task completion");
+  }
+
+  const updatedTodo: Itask = await res.json();
   return updatedTodo;
 };
