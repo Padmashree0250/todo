@@ -39,7 +39,7 @@ const AddTask = () => {
     fetchTasks();
   }, []);
 
-  const handleSubmitNewTodo: FormEventHandler<HTMLFormElement> = async (e) => {
+  const handleSubmitNewTodo: FormEventHandler<HTMLFormElement> = async (e) => {      //adding new task
     e.preventDefault();
     const newTask: Itask = {
       id: uuidv4(),
@@ -54,8 +54,8 @@ const AddTask = () => {
         await editTodo({
           ...editingTask,
           text: newTaskValue,
-          description: newTaskDescription,
-          lastUpdated: new Date().toISOString(),
+          description: newTaskDescription,                      // adding description after editing
+          lastUpdated: new Date().toISOString(),                //time stamp of last update
         });
         const updatedTasks = tasks.map((task) =>
           task.id === editingTask.id
@@ -76,8 +76,8 @@ const AddTask = () => {
         setFilteredTasks(updatedTasks);
       }
 
-      setNewTaskValue("");
-      setNewTaskDescription("");
+      setNewTaskValue("");                          
+      setNewTaskDescription("");                       
       setModalOpen(false);
       setEditingTask(null);
       router.refresh();
@@ -89,7 +89,7 @@ const AddTask = () => {
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value;
     setSearchQuery(query);
-    filterTasks(query, tasks);
+    filterTasks(query, tasks);                      //searching the task
   };
 
   const filterTasks = (query: string, tasks: Itask[]) => {
@@ -172,15 +172,15 @@ const AddTask = () => {
               onChange={(e) => setNewTaskValue(e.target.value)}
               type="text"
               placeholder="Task Title"
-              className="input input-bordered w-full"
+              className="input input-bordered w-full"                            //setting task
             />
             <textarea
               value={newTaskDescription}
-              onChange={(e) => setNewTaskDescription(e.target.value)}
+              onChange={(e) => setNewTaskDescription(e.target.value)}                  //setting description while adding task
               placeholder="Task Description"
               className="input input-bordered w-full mt-2"
             />
-            <button type="submit" className="btn mt-2">
+            <button type="submit" className="btn mt-2">                          //submitting task and description
               {editingTask ? "Update" : "Submit"}
             </button>
           </div>
