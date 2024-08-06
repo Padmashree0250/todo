@@ -5,12 +5,15 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 `				                                  TODO PROJECT 
 Key Features
 Task List: Displays a list of tasks that can be expanded to show additional details.
+
 Expandable Task Details: When a task is expanded, it shows a description and a timestamp of the last update.
 Task Management: Likely includes adding, editing, and deleting tasks and also marking it done using checkbox.
+
 Components
 Task List Component: A component that displays the list of tasks. Each task can be expanded to show more details.
 Task Detail Component: Displays detailed information about a task, including its description and timestamp.
 Form Component (if present): A form for adding or editing tasks.
+
 API Functions
 The application might use API functions to interact with a backend server for tasks such as fetching, creating, updating, or deleting tasks.
 Rendering
@@ -28,18 +31,23 @@ This project aims to provide a user-friendly interface for managing tasks, with 
 IMPLEMENTATION
  Frontend Implementation
 a. Setup and Configuration
+
 Next.js: Set up a Next.js project, which includes setting up the directory structure, installing dependencies, and configuring settings.
 Installation of the dependencies are done like daisy ,tailwind css ,json server.
+
 b. Components
 Task List Component
 UI Layout: Displayed a list of tasks with titles.
 Expand/Collapse Functionality: Implemented an onClick event to toggle the display of task details. This can be managed with state, such as useState for tracking the expanded state.
 Dynamic Data Loading: Fetch tasks from local state using api.
+
 Task Detail Component
 Task Description and Timestamp: Displayed detailed information when a task is expanded.
+
 Task Form Component
 Form Elements: Included fields for task title, description, and time stamp when last updated.
-Submit Functionality: Implement form submission to add and update tasks. 
+Submit Functionality: Implement form submission to add and update tasks.
+
 API Integration
 Fetching Data: Used fetch  to communicate with the backend API. For SSR, use Next.js's getServerSideProps.
 CRUD Operations: Implement functions to create, edit or update, and delete tasks.
