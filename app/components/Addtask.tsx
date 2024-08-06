@@ -1,4 +1,4 @@
-"use client";
+"use client";       //to define its client side 
 
 import { AiOutlinePlus } from "react-icons/ai"; //icons
 import Modal from "./model";
