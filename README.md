@@ -55,13 +55,20 @@ CRUD Operations: Implement functions to create, edit or update, and delete tasks
 
 SETUP AND EXECUTION 
 INSTALLATION: install daisy,json-server,tailwind css using the following commands.
+
 npm install -D tailwindcss postcss autoprefixer
+
 npm install daisyui
+
 npm install -g json-server,npm install --save-dev json-server
+
 These commands are used to install the libraries required for the project 
 EXECUTION:firstly,we need to execute the json server so that run-time fetching is easier to run the json server we need open new terminal for that and execute using following command
+
 npm run json-server
+
 Once this is done now we need to run the main program that is nextjs program to run that use command 
+
 npm run dev 
 It will be hosted in http://localhost:3000/ copy paste the link in the browser to see the output.
 
