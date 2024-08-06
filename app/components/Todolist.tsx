@@ -33,11 +33,11 @@ const Todolist: React.FC<TodolistProps> = ({ tasks, onToggleCompletion, onEdit, 
                 <Task
                   key={task.id}
                   task={task}
-                  onToggleCompletion={onToggleCompletion}
-                  onEdit={onEdit}
-                  onDelete={onDelete}
-                  expandedTaskId={expandedTaskId}
-                  onTaskClick={handleTaskClick}
+                  onToggleCompletion={onToggleCompletion}      
+                  onEdit={onEdit}                        // to edit
+                  onDelete={onDelete}                   // for deletion
+                  expandedTaskId={expandedTaskId}      //for expanstion 
+                  onTaskClick={handleTaskClick}        
                 />
               ))
             ) : (
