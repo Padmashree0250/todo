@@ -2,39 +2,60 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
-First, run the development server:
+`				                                  TODO PROJECT 
+Key Features
+Task List: Displays a list of tasks that can be expanded to show additional details.
+Expandable Task Details: When a task is expanded, it shows a description and a timestamp of the last update.
+Task Management: Likely includes adding, editing, and deleting tasks and also marking it done using checkbox.
+Components
+Task List Component: A component that displays the list of tasks. Each task can be expanded to show more details.
+Task Detail Component: Displays detailed information about a task, including its description and timestamp.
+Form Component (if present): A form for adding or editing tasks.
+API Functions
+The application might use API functions to interact with a backend server for tasks such as fetching, creating, updating, or deleting tasks.
+Rendering
+Server-Side Rendering (SSR): The consideration for implementing SSR is  to potentially improve performance and SEO.
+Technologies Used
+Frontend Framework:  using React with Next.js for the frontend.
+Styling:  using a styling solution like Tailwind CSS.
+Backend : the data is stored in a json file 
+This project aims to provide a user-friendly interface for managing tasks, with the flexibility to expand tasks for more information.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
-## Learn More
+IMPLEMENTATION
+ Frontend Implementation
+a. Setup and Configuration
+Next.js: Set up a Next.js project, which includes setting up the directory structure, installing dependencies, and configuring settings.
+Installation of the dependencies are done like daisy ,tailwind css ,json server.
+b. Components
+Task List Component
+UI Layout: Displayed a list of tasks with titles.
+Expand/Collapse Functionality: Implemented an onClick event to toggle the display of task details. This can be managed with state, such as useState for tracking the expanded state.
+Dynamic Data Loading: Fetch tasks from local state using api.
+Task Detail Component
+Task Description and Timestamp: Displayed detailed information when a task is expanded.
+Task Form Component
+Form Elements: Included fields for task title, description, and time stamp when last updated.
+Submit Functionality: Implement form submission to add and update tasks. 
+API Integration
+Fetching Data: Used fetch  to communicate with the backend API. For SSR, use Next.js's getServerSideProps.
+CRUD Operations: Implement functions to create, edit or update, and delete tasks.
+				
 
-To learn more about Next.js, take a look at the following resources:
+SETUP AND EXECUTION 
+INSTALLATION: install daisy,json-server,tailwind css using the following commands.
+npm install -D tailwindcss postcss autoprefixer
+npm install daisyui
+npm install -g json-server,npm install --save-dev json-server
+These commands are used to install the libraries required for the project 
+EXECUTION:firstly,we need to execute the json server so that run-time fetching is easier to run the json server we need open new terminal for that and execute using following command
+npm run json-server
+Once this is done now we need to run the main program that is nextjs program to run that use command 
+npm run dev 
+It will be hosted in http://localhost:3000/ copy paste the link in the browser to see the output.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
-"# todo2" 
-"# todo" 
-"# todo" 
-"# todo" 
