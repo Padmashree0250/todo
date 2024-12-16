@@ -6,7 +6,7 @@ const Page = () => {
   return (
     <div className="bg-blue-50 min-h-screen p-4">
       <header className="bg-blue-600 text-white py-4 mb-4 text-center text-2xl font-bold">
-        Todo List App
+        Todo List App bye bye
       </header>
       {/* Add your content here */}
       <Addtask />
